@@ -49,7 +49,7 @@ for vm in getAllVms:
                 pass
     
     # Setup Login
-    if vm.guest.guestFamilyis is not None:
+    if vm.guest.guestFamily is not None:
         if vm.guest.guestFamily.lower() == "linuxguest":
             inventoryObject["username"] = linux_user
             inventoryObject["ssh-key-storage-path"] = linux_pass
