@@ -1,1 +1,1 @@
-*/5 * * * * python3 generate.py > $OUTPUT_PATH
+*/5 * * * * python3 /app/generate.py > $OUTPUT_PATH
