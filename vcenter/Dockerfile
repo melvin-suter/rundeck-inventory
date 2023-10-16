@@ -8,10 +8,10 @@ ENV VCENTER_PASSWORD=password
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY . .
+COPY . /app
 RUN pip3 install -r requirements.txt
 RUN crontab crontab
 RUN mkdir -p /home/rundeck/server/data
-RUN chmod +x entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-ENTRYPOINT entrypoint.sh
+ENTRYPOINT /app/entrypoint.sh
