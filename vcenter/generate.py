@@ -49,12 +49,12 @@ for vm in getAllVms:
                 pass
     
     # Setup Login
-    if vm.guest.guestFamily == "windowsGuest":
+    if vm.guest.guestFamily.lower() == "windowsguest":
         inventoryObject["username"] = win_user
         inventoryObject["ssh-key-storage-path"] = linux_pass
         inventoryObject["ssh-authentication"] = "privateKey"
 
-    if vm.guest.guestFamily == "linuxGuest":
+    if vm.guest.guestFamily.lower() == "linuxguest":
         inventoryObject["username"] = win_user  
         inventoryObject["winrm-password-storage-path"] = win_pass 
         inventoryObject["winrm-authtype"] = "basic" 
