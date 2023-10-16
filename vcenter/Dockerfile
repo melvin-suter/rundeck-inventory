@@ -4,6 +4,10 @@ ENV OUTPUT_PATH=/home/rundeck/server/data/inventory/vcenter
 ENV VCENTER_HOSTNAME=vcenter.example.com
 ENV VCENTER_USERNAME=administrator@vsphere.local
 ENV VCENTER_PASSWORD=password
+ENV LINUX_USER=rundeck
+ENV LINUX_KEY_PATH=linuxkey
+ENV WINDOWS_USER=rundeck
+ENV WINDOWS_PASSWORD_PATH=winpass
 
 RUN mkdir -p /app
 WORKDIR /app

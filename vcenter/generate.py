@@ -3,7 +3,10 @@ from pyVim.connect import SmartConnect, Disconnect
 from yaml import dump, Dumper
 import os
 
-defaultUsername="rundeck"
+linux_user=os.getenv('LINUX_USER')
+linux_pass=os.getenv('LINUX_KEY_PATH')
+win_user=os.getenv('WINDOWS_USER')
+win_pass=os.getenv('WINDOWS_PASSWORD_PATH')
 
 service_instance = SmartConnect(host=os.getenv('VCENTER_HOSTNAME'), user=os.getenv('VCENTER_USERNAME'), pwd=os.getenv('VCENTER_PASSWORD'),disableSslCertValidation=True)
 content = service_instance.RetrieveContent()
@@ -24,14 +27,18 @@ inventory=[]
 #Iterating each vm object and printing its name
 for vm in getAllVms:
     inventoryObject = {}
+
+    # Get general data
     inventoryObject["nodename"] = vm.name
     inventoryObject["hostname"] = vm.name
-    inventoryObject["username"] = defaultUsername
     inventoryObject["description"] = vm.config.annotation
     inventoryObject["osName"] = vm.guest.guestFullName
     inventoryObject["osFamily"] = vm.guest.guestFamily
+
+    # Add OS to tags
     inventoryObject["tags"] = [vm.guest.guestFullName,vm.guest.guestFamily]
 
+    # Add Networks to tags
     for dev in vm.config.hardware.device:
         if isinstance(dev, vim.vm.device.VirtualEthernetCard):
             try:
@@ -40,6 +47,19 @@ for vm in getAllVms:
                 inventoryObject["tags"].append("Net_%s" % pg_obj.config.name)
             except:
                 pass
+    
+    # Setup Login
+    if vm.guest.guestFamily == "windowsGuest":
+        inventoryObject["username"] = win_user
+        inventoryObject["ssh-key-storage-path"] = linux_pass
+        inventoryObject["ssh-authentication"] = "privateKey"
+
+    if vm.guest.guestFamily == "linuxGuest":
+        inventoryObject["username"] = win_user  
+        inventoryObject["winrm-password-storage-path"] = win_pass 
+        inventoryObject["winrm-authtype"] = "basic" 
+
+
     inventory.append(inventoryObject)
 
 
