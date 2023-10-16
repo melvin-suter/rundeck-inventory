@@ -5,9 +5,13 @@ ENV VCENTER_HOSTNAME=vcenter.example.com
 ENV VCENTER_USERNAME=administrator@vsphere.local
 ENV VCENTER_PASSWORD=password
 
+RUN mkdir -p /app
+WORKDIR /app
+
 COPY . .
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 RUN crontab crontab
 RUN mkdir -p /home/rundeck/server/data
+RUN chmod +x entrypoint.sh
 
-CMD ["crond", "-f"]
+ENTRYPOINT entrypoint.sh

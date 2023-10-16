@@ -1,1 +1,1 @@
-*/5 * * * * mkdir -p $OUTPUT_PATH python generate.py > $OUTPUT_PATH
+*/5 * * * * python3 generate.py > $OUTPUT_PATH

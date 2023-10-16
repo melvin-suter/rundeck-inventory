@@ -1,3 +1,4 @@
 pyVim
 pyVmomi
 requests
+pyyaml

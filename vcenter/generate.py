@@ -30,7 +30,7 @@ for vm in getAllVms:
     inventoryObject["description"] = vm.config.annotation
     inventoryObject["osName"] = vm.guest.guestFullName
     inventoryObject["osFamily"] = vm.guest.guestFamily
-    inventoryObject["tags"] = [] # [vm.guest.guestFullName,vm.guest.guestFamily]
+    inventoryObject["tags"] = [vm.guest.guestFullName,vm.guest.guestFamily]
 
     for dev in vm.config.hardware.device:
         if isinstance(dev, vim.vm.device.VirtualEthernetCard):
