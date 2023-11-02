@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rundeck-inventory
+data:
+  OUTPUT_PATH: /home/rundeck/server/data/inventory/vcenter
+
+  VCENTER_HOSTNAME: vcenter.fqdn.local
+  VCENTER_PASSWORD: PASSWORD
+  VCENTER_USERNAME: rundeckro@vsphere.local
+
+  LINUX_USER: rundeck
+  LINUX_EXECUTOR: jsch-ssh 
+  LINUX_COPIER: jsch-ssh
+  LINUX_SETTINGS: |+
+    ssh-authentication:	privateKey 
+    ssh-key-storage-path:	keys/ssh/rundeck-rsa
+    
+  WINDOWS_USER: service_rundeck
+  WINDOWS_COPIER: WinRMPython 
+  WINDOWS_EXECUTOR: WinRMPython 
+  WINDOWS_SETTINGS: |+
+    winrm-auth-type: basic 
+    winrm-authtype: basic 
+    winrm-cmd: PowerShell 
+    winrm-password-storage-path: keys/win/rundeck-pass 
+    winrm-protocol: https 
