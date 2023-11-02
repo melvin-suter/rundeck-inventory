@@ -3,12 +3,19 @@ from pyVim.connect import SmartConnect, Disconnect
 from yaml import dump, Dumper
 import os
 
-linux_user=os.getenv('LINUX_USER')
-linux_pass=os.getenv('LINUX_KEY_PATH')
-win_user=os.getenv('WINDOWS_USER')
-win_pass=os.getenv('WINDOWS_PASSWORD_PATH')
+LINUX_USER=os.getenv("LINUX_USER")
+LINUX_KEY_PATH=os.getenv("LINUX_KEY_PATH")
+LINUX_EXECUTOR=os.getenv("LINUX_EXECUTOR")
+LINUX_AUTHENTICATION=os.getenv("LINUX_AUTHENTICATION")
 
-service_instance = SmartConnect(host=os.getenv('VCENTER_HOSTNAME'), user=os.getenv('VCENTER_USERNAME'), pwd=os.getenv('VCENTER_PASSWORD'),disableSslCertValidation=True)
+WINDOWS_USER=os.getenv("WINDOWS_USER")
+WINDOWS_PASSWORD_PATH=os.getenv("WINDOWS_PASSWORD_PATH")
+WINDOWS_EXECUTOR=os.getenv("WINDOWS_EXECUTOR")
+WINDOWS_WINRM_AUTHTYPE=os.getenv("WINDOWS_WINRM_AUTHTYPE")
+WINDOWS_WINRM_PROTOCOL=os.getenv("WINDOWS_WINRM_PROTOCOL")
+WINDOWS_WINRM_CMD=os.getenv("WINDOWS_WINRM_CMD")
+
+service_instance = SmartConnect(host=os.getenv("VCENTER_HOSTNAME"), user=os.getenv("VCENTER_USERNAME"), pwd=os.getenv("VCENTER_PASSWORD"),disableSslCertValidation=True)
 content = service_instance.RetrieveContent()
 
 
@@ -51,15 +58,21 @@ for vm in getAllVms:
     # Setup Login
     if vm.guest.guestFamily is not None:
         if vm.guest.guestFamily.lower() == "linuxguest":
-            inventoryObject["username"] = linux_user
-            inventoryObject["ssh-key-storage-path"] = linux_pass
-            inventoryObject["ssh-authentication"] = "privateKey"
+            inventoryObject["username"] = LINUX_USER
+            inventoryObject["ssh-key-storage-path"] = LINUX_KEY_PATH
+            inventoryObject["ssh-authentication"] = LINUX_AUTHENTICATION
+            inventoryObject["node-executor"] = LINUX_EXECUTOR
+            inventoryObject["file-copier"] = LINUX_EXECUTOR
 
         if vm.guest.guestFamily.lower() == "windowsguest":
-            inventoryObject["username"] = win_user  
-            inventoryObject["winrm-password-storage-path"] = win_pass 
-            inventoryObject["winrm-authtype"] = "basic" 
-
+            inventoryObject["username"] = WINDOWS_USER  
+            inventoryObject["winrm-password-storage-path"] = WINDOWS_PASSWORD_PATH 
+            inventoryObject["winrm-authtype"] = WINDOWS_WINRM_AUTHTYPE
+            inventoryObject["winrm-auth-type"] = WINDOWS_WINRM_AUTHTYPE
+            inventoryObject["winrm-protocol"] = WINDOWS_WINRM_PROTOCOL
+            inventoryObject["winrm-cmd"] = WINDOWS_WINRM_CMD
+            inventoryObject["node-executor"] = WINDOWS_EXECUTOR
+            inventoryObject["file-copier"] = WINDOWS_EXECUTOR
 
     inventory.append(inventoryObject)
 
