@@ -1,6 +1,6 @@
 from pyVmomi import vmodl, vim
 from pyVim.connect import SmartConnect, Disconnect
-from yaml import dump, load, Dumper
+from yaml import dump, load, Dumper, Loader
 import os
 
 LINUX_USER=os.getenv("LINUX_USER")
@@ -65,21 +65,21 @@ for vm in getAllVms:
             inventoryObject["username"] = LINUX_USER
             inventoryObject["node-executor"] = LINUX_EXECUTOR
             inventoryObject["file-copier"] = LINUX_COPIER
-            inventoryObject.update(load(LINUX_SETTINGS))
+            inventoryObject.update(load(LINUX_SETTINGS, loader=Loader))
             hit=True
 
         if vm.guest.guestFamily.lower() == "windowsguest":
             inventoryObject["username"] = WINDOWS_USER  
             inventoryObject["node-executor"] = WINDOWS_EXECUTOR
             inventoryObject["file-copier"] = WINDOWS_COPIER
-            inventoryObject.update(load(WINDOWS_SETTINGS))
+            inventoryObject.update(load(WINDOWS_SETTINGS, loader=Loader))
             hit=True
 
     if(not hit):
         inventoryObject["username"] = OTHER_USER  
         inventoryObject["node-executor"] = OTHER_EXECUTOR
         inventoryObject["file-copier"] = OTHER_COPIER
-        inventoryObject.update(load(OTHER_SETTINGS))
+        inventoryObject.update(load(OTHER_SETTINGS, loader=Loader))
 
     inventory.append(inventoryObject)
 
