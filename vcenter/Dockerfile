@@ -16,6 +16,7 @@ ENV OTHER_USER=rundeck
 ENV OTHER_EXECUTOR=jsch-ssh
 ENV OTHER_COPIER=jsch-ssh
 ENV OTHER_SETTINGS={}
+ENV ONLY_RUNNING=true
 
 RUN mkdir -p /app
 WORKDIR /app

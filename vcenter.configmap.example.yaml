@@ -25,3 +25,4 @@ data:
     winrm-cmd: PowerShell 
     winrm-password-storage-path: keys/win/rundeck-pass 
     winrm-protocol: https 
+  ONLY_RUNNING: "true"

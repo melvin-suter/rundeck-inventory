@@ -19,6 +19,8 @@ OTHER_COPIER=os.getenv("OTHER_COPIER")
 OTHER_EXECUTOR=os.getenv("OTHER_EXECUTOR")
 OTHER_SETTINGS=os.getenv("OTHER_SETTINGS")
 
+ONLY_RUNNING=os.getenv("ONLY_RUNNING")
+
 service_instance = SmartConnect(host=os.getenv("VCENTER_HOSTNAME"), user=os.getenv("VCENTER_USERNAME"), pwd=os.getenv("VCENTER_PASSWORD"),disableSslCertValidation=True)
 content = service_instance.RetrieveContent()
 
@@ -59,6 +61,10 @@ for vm in getAllVms:
             except:
                 pass
     
+    # Check State
+    if(ONLY_RUNNING.lower() == "true" and not vm.runtime.powerState == "poweredOn"):
+        continue
+
     # Setup Login
     hit=False
     if vm.guest.guestFamily is not None:
